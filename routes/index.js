@@ -1,9 +1,13 @@
-var express = require('express');
-var router = express.Router();
+var api = require('./api');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+var routes = function(app) {
+  // Register the index page route
+  app.get('/', function(req, res) {
+    res.render('index', { title: 'Express '});
+  });
 
-module.exports = router;
+  // Register the API routes
+  app.use('/api', api());
+};
+
+module.exports = routes;

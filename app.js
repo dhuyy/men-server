@@ -4,16 +4,12 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var morgan = require('morgan');
 var mongoose = require('mongoose');
 var passport = require('passport');
 
 var config = require('./config/db');
 
-var index = require('./routes/index');
-var users = require('./routes/users');
-
-var api = require('./routes/api');
+var routes = require('./routes/index');
 
 var app = express();
 
@@ -36,17 +32,14 @@ app.set('view engine', 'jade');
 
 // app configurations
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
-app.use(logger('combined'));
+app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', function(req, res) {
-  res.send('Page under construction.');
-});
-
-app.use('/api', api);
+//Initilizing routes.
+routes(app);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
