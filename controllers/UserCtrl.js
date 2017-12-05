@@ -5,6 +5,8 @@ var config = require('../config/database');
 var UserCtrl = {};
 
 UserCtrl.signIn = function(req, res) {
+  var TOKEN_EXPIRATION = 3600;
+
   User.findOne({
     username: req.body.username
   }, function(err, user) {
@@ -15,7 +17,9 @@ UserCtrl.signIn = function(req, res) {
     } else {
       user.comparePassword(req.body.password, function (err, isMatch) {
         if (isMatch && !err) {
-          var token = jwt.sign(user.toJSON(), config.secret);
+          var token = jwt.sign(user.toJSON(), config.secret, {
+            expiresIn: TOKEN_EXPIRATION
+          });
 
           res.json({ success: true, token: 'JWT ' + token });
         } else {
