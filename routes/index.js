@@ -1,12 +1,9 @@
 var api = require('./api');
 
 var routes = function(app) {
-  // Register the index page route
-  app.get('/', function(req, res) {
-    res.render('index', { title: 'Express '});
-  });
-
-  // Register the API routes
+  /**
+   * Initializing routes
+   */
   app.use('/api', api());
 };
 
