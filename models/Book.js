@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+mongoose.Promise = global.Promise;
 
-var BookSchema = new Schema({
+var BookSchema = new mongoose.Schema({
   isbn: {
     type: String,
     required: true
