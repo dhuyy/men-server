@@ -1,17 +1,31 @@
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+mongoose.Promise = global.Promise;
+
 var bcrypt = require('bcrypt-nodejs');
 
-var UserSchema = new Schema({
+var UserSchema = new mongoose.Schema({
   username: {
     type: String,
+    unique: true,
+    required: true
+  },
+  email: {
+    type: String,
+    lowercase: true,
     unique: true,
     required: true
   },
   password: {
     type: String,
     required: true
+  },
+  role: {
+    type: String,
+    enum: ['ADMIN', 'CREATOR', 'VIEWER'],
+    default: 'VIEWER'
   }
+}, {
+  timestamps: true
 });
 
 UserSchema.pre('save', function (next) {

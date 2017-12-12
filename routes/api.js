@@ -1,10 +1,14 @@
 var router = require('express').Router();
-var auth = require('../helpers/auth');
+
+var passport = require('passport');
+require('../config/passport')(passport);
 
 var UserCtrl = require('../controllers/UserCtrl');
 var BookCtrl = require('../controllers/BookCtrl');
 
 var routes = function() {
+  var requireAuth = passport.authenticate('jwt', {session: false});
+
   /**
    * User Routes
    */
@@ -14,8 +18,8 @@ var routes = function() {
   /**
    * Book Routes
    */
-  router.get('/book', auth.setPrivateRoute(), BookCtrl.get);
-  router.post('/book', auth.setPrivateRoute(), BookCtrl.create);
+  router.get('/book', requireAuth, UserCtrl.requireRole(['ADMIN', 'CREATOR']), BookCtrl.get);
+  router.post('/book', requireAuth, BookCtrl.create);
 
   return router;
 };
